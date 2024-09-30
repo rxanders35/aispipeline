@@ -15,8 +15,8 @@ Learning a compiled memory-safe, type-safe language like Rust is an investment.
 - Besides the previous point, I have always wanted to go to the Scandanavian countries, and I have always loved the stories of Vikings in the early medieval period. One can only imagine the millions of pairs of eyes that have witnessed the harsh and cold waters of the Baltic!
 
 **Why Rust?**
-- No offense to Python, but being that it is a dynamically-typed interpreted language, and the fact that I have been learning it since committing to learning software development last Spring, I feel that I have put myself at a conceptual disadvantage in comparison to my peers.
-- As a major at UF who is only now starting my minor degree in Computer Science, things like memory allocation, data structures, and type safety are things I am just now learning.
+- No offense to Python, but being that it is a dynamically-typed interpreted language, and the fact that I have been learning it since committing to learning software development last Spring, I feel that I have put myself at a conceptual disadvantage in comparison to my peers when it comes to computer science knowledge.
+- As a business major at UF who is only now starting my minor degree in Computer Science, things like memory allocation, data structures, and type safety are things I am just now learning.
 - Rust is notoriously challenging to learn, but very rewarding. In learning and writing it, it has forced me to think much more about how a programming language interacts with the computer.
 - Rust is rising in prevalence in the data world. As the demands of large scale data grow, using JVM-based systems like Spark and Flink carry an additional overhead. Rust compiles directly to byte-code, and there is a growing ecosystem for data-centric libraries like DataFusion, Ballista, and Arrow that expand Rust's capabilities for data processing.
 
