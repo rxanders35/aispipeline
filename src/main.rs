@@ -38,3 +38,4 @@ fn unpack_zip(zip_data: Vec<u8>) -> Result<Vec<String>, Box<dyn Error>> {
             csv_files.push(path.clone());
         }
     }
+}
