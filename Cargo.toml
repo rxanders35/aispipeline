@@ -9,3 +9,4 @@ tokio = { version = "1.40", features = ["full"]}
 arrow = { version = "53.0.0", default-features = false, features = ["csv"] }
 parquet = { version = "53.0.0", features = ["arrow", "async"]}
 zip = { version = "2.2.0" }
+futures = { version = "0.3" }
