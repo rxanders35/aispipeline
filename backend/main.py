@@ -15,6 +15,9 @@ BUCKET_NAME = os.environ.get("GCP_BUCKET_NAME")
 DATASET_ID = os.environ.get("BQ_DATASET_ID")
 TABLE_ID = os.environ.get("BQ_TABLE_ID")
 
+if not all([PROJECT_ID, BUCKET_NAME, DATASET_ID, TABLE_ID]):
+    raise ValueError("Not all environment vars have been set")
+
 def process_ais_csvs(event, context):
     gcs_client = storage.Client()
     bq_client = bigquery.Client()
@@ -78,7 +81,6 @@ def process_ais_csvs(event, context):
             destination_table_id,
             job_config=job_config
         )
-        load_job.result()
 
         load_job_log_payload = {
             "message": f"BigQuery load job started successfully for {source_file_name}",
@@ -115,6 +117,3 @@ def process_ais_csvs(event, context):
 
 def main():
     process_ais_csvs(None, None)
-
-if __name__ == '__main__':
-    main()

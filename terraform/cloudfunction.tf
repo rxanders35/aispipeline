@@ -4,11 +4,10 @@ data "archive_file" "source_zip" {
   output_path = "${path.module}/source.zip"
 }
 
-
-
 resource "google_cloudfunctions2_function" "process_ais_data" {
-  name     = "process_ais_data"
-  location = "us-east1"
+  depends_on = [google_project_service.required_apis]
+  name       = "process_ais_data"
+  location   = "us-east1"
   build_config {
     runtime     = "python311"
     entry_point = "process_ais_csvs"
@@ -21,7 +20,7 @@ resource "google_cloudfunctions2_function" "process_ais_data" {
   }
   service_config {
     timeout_seconds  = 540
-    available_memory = "512MiB"
+    available_memory = "512Mi"
     environment_variables = {
       GCP_PROJECT_ID  = "aispipeline"
       GCP_BUCKET_NAME = google_storage_bucket.ais_bronze_layer.name

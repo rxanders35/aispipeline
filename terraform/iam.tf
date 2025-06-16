@@ -17,3 +17,18 @@ resource "google_storage_bucket_iam_member" "gcs_object_admin" {
   role   = "roles/storage.objectAdmin"
   member = "serviceAccount:${data.google_project.project.number}@cloudservices.gserviceaccount.com"
 }
+
+resource "google_project_service" "required_apis" {
+  project = "aispipeline"
+  for_each = toset([
+    "cloudfunctions.googleapis.com",
+    "cloudbuild.googleapis.com",
+    "run.googleapis.com",
+    "iam.googleapis.com",
+    "cloudresourcemanager.googleapis.com"
+  ])
+  service                    = each.key
+  disable_dependent_services = false
+  disable_on_destroy         = false
+}
+
