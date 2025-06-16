@@ -1,34 +1,3 @@
-terraform {
-  required_providers {
-    google = {
-      source  = "hashicorp/google"
-      version = "6.8.0"
-    }
-  }
-}
-
-provider "google" {
-  project = "aispipeline"
-  region  = "us-east1"
-}
-
-resource "google_storage_bucket" "ais_bronze_layer" {
-  name                        = "ais_bronze_layer_01"
-  location                    = "us-east1"
-  storage_class               = "STANDARD"
-  uniform_bucket_level_access = true
-
-  lifecycle_rule {
-    condition {
-      age = 1
-    }
-    action {
-      type          = "SetStorageClass"
-      storage_class = "ARCHIVE"
-    }
-  }
-}
-
 resource "google_bigquery_dataset" "ais_gold_warehouse" {
   dataset_id                 = "ais_gold_warehouse_01"
   friendly_name              = "AIS Gold Layer Data Warehouse"
