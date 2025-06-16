@@ -1,4 +1,4 @@
 backend/requirements.txt
 backend/venv
 .env
-terraform/.terraform
+terraform/.terraform.terraform/
