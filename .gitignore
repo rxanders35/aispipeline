@@ -1,4 +1,8 @@
-backend/requirements.txt
-backend/venv
-.env
-.terraform/
+**/.terraform/
+**/*.tfstate
+**/*.tfstate.backup
+**/source.zip
+**/__pycache__/
+**/*.pyc
+**/venv/
+.DS_Store
