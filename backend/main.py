@@ -8,17 +8,16 @@ from dotenv import load_dotenv
 from google.cloud import storage
 from google.cloud import bigquery
 
-load_dotenv()
-
-PROJECT_ID = os.environ.get("GCP_PROJECT_ID")
-BUCKET_NAME = os.environ.get("GCP_BUCKET_NAME")
-DATASET_ID = os.environ.get("BQ_DATASET_ID")
-TABLE_ID = os.environ.get("BQ_TABLE_ID")
-
-if not all([PROJECT_ID, BUCKET_NAME, DATASET_ID, TABLE_ID]):
-    raise ValueError("Not all environment vars have been set")
-
 def process_ais_csvs(event, context):
+    PROJECT_ID = os.environ.get("GCP_PROJECT_ID")
+    BUCKET_NAME = os.environ.get("GCP_BUCKET_NAME")
+    DATASET_ID = os.environ.get("BQ_DATASET_ID")
+    TABLE_ID = os.environ.get("BQ_TABLE_ID")
+
+    if not all([PROJECT_ID, BUCKET_NAME, DATASET_ID, TABLE_ID]):
+        raise ValueError("Not all environment vars have been set")
+
+
     gcs_client = storage.Client()
     bq_client = bigquery.Client()
 
