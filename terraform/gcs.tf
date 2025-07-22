@@ -3,7 +3,6 @@ resource "google_storage_bucket" "ais_bronze_layer" {
   location                    = "us-east1"
   storage_class               = "STANDARD"
   uniform_bucket_level_access = true
-
   lifecycle_rule {
     condition {
       age = 1
@@ -19,4 +18,10 @@ resource "google_storage_bucket_object" "source_archive_object" {
   name   = "source-code.zip"
   bucket = google_storage_bucket.ais_bronze_layer.name
   source = data.archive_file.source_zip.output_path
+}
+
+data "archive_file" "source_zip" {
+  type        = "zip"
+  source_dir  = "../script"
+  output_path = "${path.module}/source.zip"
 }

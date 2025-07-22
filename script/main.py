@@ -4,11 +4,13 @@ import json
 import datetime
 import time
 import os
-from dotenv import load_dotenv
+import functions_framework
 from google.cloud import storage
 from google.cloud import bigquery
 
-def process_ais_csvs(event, context):
+
+@functions_framework.http
+def process_ais_csvs(request):
     PROJECT_ID = os.environ.get("GCP_PROJECT_ID")
     BUCKET_NAME = os.environ.get("GCP_BUCKET_NAME")
     DATASET_ID = os.environ.get("BQ_DATASET_ID")
@@ -22,9 +24,16 @@ def process_ais_csvs(event, context):
     bq_client = bigquery.Client()
 
     try:
-        yesterday = (datetime.date.today() - datetime.timedelta(days=3)).strftime('%Y-%m-%d')
-        source_file_name = f"aisdk-{yesterday}.zip"
+        target_date = (datetime.date.today() - datetime.timedelta(days=3)).strftime('%Y-%m-%d')
+        source_file_name = f"aisdk-{target_date}.zip"
         url = f"https://web.ais.dk/aisdata/{source_file_name}"
+
+        log_payload_start = {
+          "message": f"Starting pipeline for date: {target_date}",
+          "severity": "INFO",
+          "component": "pipeline-trigger"
+        }
+        print(json.dumps(log_payload_start))
 
         resp = requests.get(url, stream=True)
         resp.raise_for_status()
@@ -58,7 +67,7 @@ def process_ais_csvs(event, context):
                         }
                     }
                     print(json.dumps(log_payload))
-        
+
         gcs_upload_log = {
             "message": f"Successfully uploaded {source_file_name} to GCS.",
             "severity": "INFO",
@@ -87,15 +96,17 @@ def process_ais_csvs(event, context):
             "job_id": load_job.job_id
         }
         print(json.dumps(load_job_log_payload))
+        return ("Pipeline Triggered", 200)
 
     except requests.exceptions.HTTPError as e:
         if e.response.status_code == 404:
             not_found_payload = {
-                "message": f"Data file not found on source server for date: {yesterday}", # type: ignore
+                "message": f"Data file not found on source server for date: {target_date}",
                 "severity": "WARNING",
-                "url_checked": url # type: ignore
+                "url_checked": url
             }
             print(json.dumps(not_found_payload))
+            return (f"File not found for {target_date}", 200) # Return 200 so scheduler doesn't retry a known failure
         else:
             http_error_payload = {
                 "message": "HTTP Error during download",
@@ -104,7 +115,8 @@ def process_ais_csvs(event, context):
                 "stack_trace": traceback.format_exc()
             }
             print(json.dumps(http_error_payload))
-            
+            raise e
+
     except Exception as e:
         error_payload = {
             "message": "An unexpected error occurred in the pipeline",
@@ -113,6 +125,4 @@ def process_ais_csvs(event, context):
             "stack_trace": traceback.format_exc()
         }
         print(json.dumps(error_payload))
-
-def main():
-    process_ais_csvs(None, None)
+        raise e

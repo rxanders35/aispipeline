@@ -5,6 +5,7 @@ resource "google_bigquery_dataset" "ais_gold_warehouse" {
   delete_contents_on_destroy = true
 }
 
+
 resource "google_bigquery_table" "ais_obt" {
   project    = "aispipeline"
   dataset_id = google_bigquery_dataset.ais_gold_warehouse.dataset_id
@@ -21,7 +22,6 @@ resource "google_bigquery_table" "ais_obt" {
     { "name" : "cog", "type" : "FLOAT" },
     { "name" : "heading", "type" : "FLOAT" },
     { "name" : "imo", "type" : "INTEGER" },
-    { "name" : "callsign", "type" : "STRING" },
     { "name" : "name", "type" : "STRING" },
     { "name" : "ship_type", "type" : "STRING" },
     { "name" : "cargo_type", "type" : "STRING" },
@@ -37,6 +37,7 @@ resource "google_bigquery_table" "ais_obt" {
     { "name" : "size_c", "type" : "FLOAT" },
     { "name" : "size_d", "type" : "FLOAT" }
   ])
+
   time_partitioning {
     type  = "DAY"
     field = "Timestamp"
