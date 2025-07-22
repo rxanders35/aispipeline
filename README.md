@@ -14,7 +14,7 @@ and other pertinent metadata.
 
 ## Use Case ##
 Understanding AIS data, especially in particular bodies of water,
-allows one to get snapshot into the economic and geopolitical
+allows one to get a snapshot into the economic and geopolitical
 situation of a given region, as well as granular information
 about the flow of goods, the actors involved, and potential
 supply chain risks.
